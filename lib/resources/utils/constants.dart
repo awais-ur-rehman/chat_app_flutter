@@ -22,6 +22,8 @@ class Constants{
   static String  deviceID= "";
   static String  searchID= "";
   static String  userID= "";
+  static String userName = '';
+  static String userRole = '';
   static String  baseUrl= "https://spacexpakistan.com/fixer/public/api/";
 
 
