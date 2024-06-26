@@ -85,7 +85,7 @@ class _ChatPartnersState extends State<ChatPartners> {
                               Row(
                                 children: [
                                   TextWidget(
-                                    input: 'Chat Partner:',
+                                    input: 'User:',
                                     fontsize: 20,
                                     fontWeight: FontWeight.w300,
                                     textcolor: AppColors.black,
