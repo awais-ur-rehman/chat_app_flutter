@@ -1,16 +1,15 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import '../../models/view_fixrr_model.dart';
+import 'package:http/http.dart' as http;
+import '../../models/fixer_model.dart';
 import '../../resources/utils/app_colors.dart';
+import '../../resources/utils/constants.dart';
 import '../../resources/widgets/text_widget.dart';
 
 class MatchList extends StatefulWidget {
+  final String jobName;
 
-  final int jobId;
-
-MatchList({super.key, required this.jobId});
-
+  const MatchList({super.key, required this.jobName});
 
   @override
   State<StatefulWidget> createState() {
@@ -20,10 +19,28 @@ MatchList({super.key, required this.jobId});
 }
 
 class MatchState extends State<MatchList> {
-  List<ViewFixrrModel> fixers = [];
+  List<Fixer> fixers = [];
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<void> fetchFixers() async {
+    var url = Uri.parse('${Constants.baseUrl}fixer_search');
+    final response = await http.post(
+      url,
+      body: {'job_name': widget.jobName},
+    );
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      final List<dynamic> fixersData = responseData['fixers'];
+      fixers = fixersData.map((json) => Fixer.fromJson(json)).toList();
+    } else {}
+  }
+
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
         body: SafeArea(
       child: Container(
@@ -35,34 +52,74 @@ class MatchState extends State<MatchList> {
             fit: BoxFit.cover,
           ),
         ),
-        child: ListView.builder(
-            itemCount: fixers.length,
-            addRepaintBoundaries: true,
-            scrollDirection: Axis.vertical,
-            shrinkWrap: false,
-            physics: const AlwaysScrollableScrollPhysics(),
-            itemBuilder: (context, index) {
-              ViewFixrrModel object = fixers[index];
-              return Card(
-                child: Column(
-                  children: [
-                    TextWidget(
-                      input: object.fixerName,
-                      fontsize: 20,
-                      fontWeight: FontWeight.w300,
-                      textcolor: AppColors.black,
-                    ),
-                    TextWidget(
-                      input: object.fixerEmail,
-                      fontsize: 20,
-                      fontWeight: FontWeight.w300,
-                      textcolor: AppColors.black,
-                    ),
-
-                  ],
-                ),
+        child: FutureBuilder(
+          future: fetchFixers(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
               );
-            }),
+            } else if (snapshot.connectionState == ConnectionState.done) {
+              return ListView.builder(
+                  itemCount: fixers.length,
+                  addRepaintBoundaries: true,
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: false,
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    Fixer object = fixers[index];
+                    return Card(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                TextWidget(
+                                  input: 'Name:',
+                                  fontsize: 20,
+                                  fontWeight: FontWeight.w300,
+                                  textcolor: AppColors.black,
+                                ),
+                                const SizedBox(width: 8.0,),
+                                TextWidget(
+                                  input: object.name,
+                                  fontsize: 20,
+                                  fontWeight: FontWeight.w300,
+                                  textcolor: AppColors.black,
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                TextWidget(
+                                  input: 'Email',
+                                  fontsize: 20,
+                                  fontWeight: FontWeight.w300,
+                                  textcolor: AppColors.black,
+                                ),
+                                const SizedBox(width: 8.0,),
+                                TextWidget(
+                                  input: object.email,
+                                  fontsize: 20,
+                                  fontWeight: FontWeight.w300,
+                                  textcolor: AppColors.black,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  });
+            } else {
+              return const Center(
+                child: Text('No Fixers Found'),
+              );
+            }
+          },
+        ),
       ),
     ));
   }
