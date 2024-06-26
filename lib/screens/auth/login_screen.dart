@@ -207,6 +207,8 @@ class LoginState extends State<LoginScreen> {
         dynamic user = body['user'];
         dynamic role = user['user_type'];
         Constants.userID=user['id'].toString();
+        Constants.userName = user['name'];
+        Constants.userRole = role;
 
         if (role == 'User') {
           setState(() {

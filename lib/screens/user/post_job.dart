@@ -51,7 +51,7 @@ class JobState extends State<PostJob> {
     'week',
     'month',
     'year',
-    'single time'
+    'once'
   ];
 
   // This variable holds the selected item

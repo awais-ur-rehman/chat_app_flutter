@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import '../../chat_screen.dart';
 import '../../models/fixer_model.dart';
 import '../../resources/utils/app_colors.dart';
 import '../../resources/utils/constants.dart';
@@ -70,7 +71,8 @@ class MatchState extends State<MatchList> {
                     Fixer object = fixers[index];
                     return Card(
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10.0, vertical: 10.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -82,7 +84,9 @@ class MatchState extends State<MatchList> {
                                   fontWeight: FontWeight.w300,
                                   textcolor: AppColors.black,
                                 ),
-                                const SizedBox(width: 8.0,),
+                                const SizedBox(
+                                  width: 8.0,
+                                ),
                                 TextWidget(
                                   input: object.name,
                                   fontsize: 20,
@@ -99,7 +103,9 @@ class MatchState extends State<MatchList> {
                                   fontWeight: FontWeight.w300,
                                   textcolor: AppColors.black,
                                 ),
-                                const SizedBox(width: 8.0,),
+                                const SizedBox(
+                                  width: 8.0,
+                                ),
                                 TextWidget(
                                   input: object.email,
                                   fontsize: 20,
@@ -107,6 +113,33 @@ class MatchState extends State<MatchList> {
                                   textcolor: AppColors.black,
                                 ),
                               ],
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ChatScreen(
+                                              role: Constants.userRole,
+                                              userName: Constants.userName,
+                                              chatPartnerName: 'Awais Jarral',
+                                            )));
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: <Widget>[
+                                  TextWidget(
+                                    input: 'Message',
+                                    fontsize: 17,
+                                    fontWeight: FontWeight.w300,
+                                    textcolor: AppColors.secondaryColor,
+                                  ),
+                                  const Icon(
+                                    Icons.arrow_forward_outlined,
+                                    color: AppColors.secondaryColor,
+                                  )
+                                ],
+                              ),
                             ),
                           ],
                         ),
