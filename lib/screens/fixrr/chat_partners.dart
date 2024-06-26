@@ -35,11 +35,60 @@ class _ChatPartnersState extends State<ChatPartners> {
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
       final List<dynamic> chatPartnersData = responseData['chatPartners'];
-      print(chatPartnersData);
       return chatPartnersData.cast<String>();
     } else {
       throw Exception('Failed to load chat partners');
     }
+  }
+
+  void _showLanguageSelectionDialog(String chatPartner) {
+    String selectedLanguage = 'en';
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Select Language'),
+          content: StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return DropdownButton<String>(
+                value: selectedLanguage,
+                items: <String>['en', 'es', 'de', 'nl'].map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (newValue) {
+                  setState(() {
+                    selectedLanguage = newValue!;
+                  });
+                },
+              );
+            },
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ChatScreen(
+                      role: Constants.userRole,
+                      userName: widget.userName,
+                      chatPartnerName: chatPartner,
+                      selectedLanguage: selectedLanguage,
+                    ),
+                  ),
+                );
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -103,14 +152,7 @@ class _ChatPartnersState extends State<ChatPartners> {
                               ),
                               InkWell(
                                 onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => ChatScreen(
-                                            role: Constants.userRole,
-                                            userName: widget.userName,
-                                            chatPartnerName: chatPartner,
-                                          )));
+                                  _showLanguageSelectionDialog(chatPartner);
                                 },
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
