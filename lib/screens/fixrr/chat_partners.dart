@@ -5,6 +5,7 @@ import '../../chat_screen.dart';
 import '../../resources/utils/app_colors.dart';
 import '../../resources/utils/constants.dart';
 import '../../resources/widgets/text_widget.dart';
+
 class ChatPartners extends StatefulWidget {
   final String userName;
 
@@ -24,7 +25,7 @@ class _ChatPartnersState extends State<ChatPartners> {
   }
 
   Future<List<String>> fetchChatPartners() async {
-    var url = Uri.parse('${Constants.baseUrl}api/messaging/chatPartners');
+    var url = Uri.parse('https://fixxr-65433a1a292e.herokuapp.com/api/messaging/chatPartners');
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
@@ -34,9 +35,10 @@ class _ChatPartnersState extends State<ChatPartners> {
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
       final List<dynamic> chatPartnersData = responseData['chatPartners'];
+      print(chatPartnersData);
       return chatPartnersData.cast<String>();
     } else {
-      return [];
+      throw Exception('Failed to load chat partners');
     }
   }
 
@@ -44,7 +46,7 @@ class _ChatPartnersState extends State<ChatPartners> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Chat Partners'),
+        title: Text('Chat Partners'),
       ),
       body: SafeArea(
         child: Container(
