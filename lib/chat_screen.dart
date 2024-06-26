@@ -6,7 +6,7 @@ class ChatScreen extends StatefulWidget {
   final String userName;
   final String chatPartnerName;
 
-  ChatScreen({required this.role, required this.userName, required this.chatPartnerName});
+  const ChatScreen({super.key, required this.role, required this.userName, required this.chatPartnerName});
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -25,17 +25,23 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void _connectSocket() {
-    socket = IO.io('http://192.168.100.240:8000', <String, dynamic>{
+    socket = IO.io('https://fixxr-65433a1a292e.herokuapp.com', <String, dynamic>{
       'transports': ['websocket'],
-      'autoConnect': false,
+      'autoConnect': true,
     });
-
-    socket.connect();
 
     socket.onConnect((_) {
       print('connected to socket server');
       _fetchMessages();
       _joinRoom();
+    });
+
+    socket.on('disconnect', (_) {
+      print('disconnected from socket server');
+      // Attempt to reconnect after a delay
+      Future.delayed(const Duration(seconds: 5), () {
+        socket.connect();
+      });
     });
 
     socket.on('receiveMessage', (data) {
@@ -46,8 +52,6 @@ class _ChatScreenState extends State<ChatScreen> {
         _scrollToBottom();
       }
     });
-
-    socket.onDisconnect((_) => print('disconnected from socket server'));
   }
 
   void _joinRoom() {
@@ -75,7 +79,7 @@ class _ChatScreenState extends State<ChatScreen> {
       if (_scrollController.hasClients) {
         _scrollController.animateTo(
           _scrollController.position.maxScrollExtent,
-          duration: Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 300),
           curve: Curves.easeOut,
         );
       }
@@ -109,52 +113,88 @@ class _ChatScreenState extends State<ChatScreen> {
       appBar: AppBar(
         title: Text('Chat with ${widget.chatPartnerName}'),
       ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: ListView.builder(
-              controller: _scrollController,
-              itemCount: _messages.length,
-              itemBuilder: (context, index) {
-                final message = _messages[index];
-                bool isSentByMe = message['sender'] == widget.userName;
+      body: SafeArea(
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/chat_bg.png'),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                child: ListView.builder(
+                  controller: _scrollController,
+                  itemCount: _messages.length,
+                  itemBuilder: (context, index) {
+                    final message = _messages[index];
+                    bool isSentByMe = message['sender'] == widget.userName;
 
-                return Align(
-                  alignment: isSentByMe ? Alignment.centerRight : Alignment.centerLeft,
-                  child: Container(
-                    margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                    decoration: BoxDecoration(
-                      color: isSentByMe ? Colors.green : Colors.blue,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Text(
-                      message['message'],
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: TextField(
-                    controller: _controller,
-                    decoration: InputDecoration(hintText: 'Enter message'),
-                  ),
+                    return Align(
+                      alignment: isSentByMe ? Alignment.centerRight : Alignment.centerLeft,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                        decoration: BoxDecoration(
+                          color: isSentByMe ? Colors.green.withOpacity(0.9) : Colors.black.withOpacity(0.5),
+                          borderRadius: BorderRadius.circular(18),
+                        ),
+                        child: Text(
+                          message['message'],
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    );
+                  },
                 ),
-                IconButton(
-                  icon: Icon(Icons.send),
-                  onPressed: _sendMessage,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: TextField(
+                        cursorColor: Colors.black,
+                        controller: _controller,
+                        decoration: const InputDecoration(
+                          hintText: 'Enter message',
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                            borderSide: BorderSide.none,
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                            borderSide: BorderSide(
+                              color: Colors.grey,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                            borderSide: BorderSide(
+                              color: Colors.blue,
+                              width: 2.0,
+                            ),
+                          ),
+                        ),
+                      )
+
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.send),
+                      onPressed: _sendMessage,
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

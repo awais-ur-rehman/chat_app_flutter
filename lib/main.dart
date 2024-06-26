@@ -1,49 +1,47 @@
+import 'package:chat_app/resources/utils/app_colors.dart';
+import 'package:chat_app/resources/utils/constants.dart';
+import 'package:chat_app/screens/auth/fixrr_signup_screen.dart';
+import 'package:chat_app/screens/auth/login_screen.dart';
+import 'package:chat_app/screens/auth/user_signup_screen.dart';
+import 'package:chat_app/screens/choose_option_screen.dart';
+import 'package:chat_app/screens/fixrr/fixerr_home.dart';
+import 'package:chat_app/screens/user/home_screen.dart';
+import 'package:chat_app/screens/user/post_job.dart';
+import 'package:chat_app/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
-import 'signup_screen.dart';
-import 'login_screen.dart';
-import 'welcome_screen.dart';
-import 'chat_screen.dart';
-import 'list_screen.dart';
-import 'extension.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'User & Fixer App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: WelcomeScreen(),
-      routes: {
-        '/signup': (context) => SignupScreen(onSignup: () {
-          Navigator.pushReplacementNamed(context, '/login');
-        }),
-        '/login': (context) => LoginScreen(onLogin: (role, user) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ListScreen(
-                role: role,
-                user: user,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          cardTheme: const CardTheme(
+            surfaceTintColor: Colors.white,
+          ),
+          colorScheme: ColorScheme.fromSeed(seedColor: AppColors.textBlue),
+          useMaterial3: true,
+        ),
+        initialRoute: Constants.welcomeScreen,
+        debugShowCheckedModeBanner: false,
+        routes: {
+          Constants.welcomeScreen: (context) => WelcomeScreen(),
+          Constants.loginScreen: (context) => const LoginScreen(),
+          Constants.homeScreen: (context) => const HomeScreen(),
+          Constants.jobPost: (context) => const PostJob(
+                jobName: "Job Name",
               ),
-            ),
-          );
-        }),
-        '/chat': (context) => ChatScreen(
-          role: 'user', // Replace with actual role logic
-          userName: 'User', // Replace with actual user name logic
-          chatPartnerName: 'Partner', // Replace with actual chat partner name logic
-        ),
-        '/list': (context) => ListScreen(
-          role: 'user', // Replace with actual role logic
-          user: {'name': 'User'}, // Replace with actual user name logic
-        ),
-      },
-    );
+          Constants.registerUserScreen: (context) => UserSignUpScreen(),
+          Constants.registerFixrrScreen: (context) => FixrSignUpScreen(),
+          Constants.chooseOptions: (context) => ChooseOptionScreen(),
+          Constants.fixerHomeScreen: (context) => const FixerHome(),
+          // Constants.matchFinderScreen: (context) => MatchList(),
+        });
   }
 }
