@@ -18,14 +18,13 @@ class _LoginScreenState extends State<LoginScreen> {
   String _password = '';
 
   Future<void> _login() async {
-    final url = Uri.parse('http://192.168.100.240:8000/api/auth/login');
+    final url = Uri.parse('https://spacexpakistan.com/fixer/public/api/users/signIn');
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
       body: json.encode({
         'email': _email,
         'password': _password,
-        'role': _role,
       }),
     );
 

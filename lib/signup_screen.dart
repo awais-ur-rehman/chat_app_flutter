@@ -20,7 +20,7 @@ class _SignupScreenState extends State<SignupScreen> {
   String _specialty = '';
 
   Future<void> _signup() async {
-    final url = Uri.parse('http://192.168.100.240:8000/api/auth/signup');
+    final url = Uri.parse('https://spacexpakistan.com/fixer/public/api/users/store');
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
