@@ -12,6 +12,7 @@ class Constants{
   static const chooseOptions='ChooseOptions';
   static const matchFinderScreen='matchFinderScreen';
   static const fixerHomeScreen = 'fixerHomeScreen';
+  static const partnerScreen = 'partnetScreen';
 
 
   static const Widget height15 = SizedBox(height: 15);
