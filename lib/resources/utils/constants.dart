@@ -11,6 +11,7 @@ class Constants{
   static const jobPost='JobPost';
   static const chooseOptions='ChooseOptions';
   static const matchFinderScreen='matchFinderScreen';
+  static const fixerHomeScreen = 'fixerHomeScreen';
 
 
   static const Widget height15 = SizedBox(height: 15);
