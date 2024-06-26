@@ -47,19 +47,26 @@ class MatchState extends State<MatchList> {
   void _showLanguageSelectionDialog(Fixer fixer) {
     String selectedLanguage = 'en';
 
+    final Map<String, String> languages = {
+      'en': 'English',
+      'es': 'Spanish',
+      'de': 'German',
+      'nl': 'Dutch',
+    };
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Select Primary Language'),
+          title: const Text('Select Primary Language'),
           content: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
               return DropdownButton<String>(
                 value: selectedLanguage,
-                items: <String>['en', 'es', 'de', 'nl'].map((String value) {
+                items: languages.keys.map((String key) {
                   return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
+                    value: key,
+                    child: Text(languages[key]!),
                   );
                 }).toList(),
                 onChanged: (newValue) {
@@ -86,13 +93,15 @@ class MatchState extends State<MatchList> {
                   ),
                 );
               },
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         );
       },
     );
   }
+
+
 
   @override
   Widget build(BuildContext context) {
