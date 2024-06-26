@@ -255,7 +255,7 @@ class SignUpState extends State<UserSignUpScreen> {
         "password": password,
         "user_type": "User"
       },
-    ).timeout(const Duration(seconds: 10), onTimeout: () {
+    ).timeout(const Duration(seconds: 15), onTimeout: () {
       return confirmationPopup(context, "Check your Internet Connection!");
     });
 
@@ -268,6 +268,8 @@ class SignUpState extends State<UserSignUpScreen> {
         dynamic user = body['user'];
         dynamic role = user['user_type'];
         Constants.userID=user['id'].toString();
+        Constants.userName = user['name'];
+        Constants.userRole = role;
 
         Navigator.pushAndRemoveUntil(
           context,
