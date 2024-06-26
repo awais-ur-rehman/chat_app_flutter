@@ -144,7 +144,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         ),
                         child: Text(
                           message['message'],
-                          style: const TextStyle(color: Colors.white),
+                          style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
                         ),
                       ),
                     );

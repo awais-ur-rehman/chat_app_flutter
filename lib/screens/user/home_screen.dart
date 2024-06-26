@@ -73,7 +73,7 @@ class HomeState extends State<HomeScreen> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    const PostJob(jobName: "Cleaning ",),
+                                    const PostJob(jobName: "Cleaning",),
                               ),
                             );
                            // Navigator.pushNamed(context, Constants.jobPost,);

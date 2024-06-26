@@ -122,7 +122,7 @@ class MatchState extends State<MatchList> {
                                         builder: (context) => ChatScreen(
                                               role: Constants.userRole,
                                               userName: Constants.userName,
-                                              chatPartnerName: 'Awais Jarral',
+                                              chatPartnerName: object.name,
                                             )));
                               },
                               child: Row(

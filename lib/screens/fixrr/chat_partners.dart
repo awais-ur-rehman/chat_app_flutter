@@ -36,7 +36,7 @@ class _ChatPartnersState extends State<ChatPartners> {
       final List<dynamic> chatPartnersData = responseData['chatPartners'];
       return chatPartnersData.cast<String>();
     } else {
-      throw Exception('Failed to load chat partners');
+      return [];
     }
   }
 
@@ -44,7 +44,7 @@ class _ChatPartnersState extends State<ChatPartners> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chat Partners'),
+        title: const Text('Chat Partners'),
       ),
       body: SafeArea(
         child: Container(
