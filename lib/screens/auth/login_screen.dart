@@ -11,6 +11,8 @@ import '../../resources/widgets/email_input.dart';
 import '../user/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState

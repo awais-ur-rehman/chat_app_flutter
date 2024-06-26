@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-
 import '../../models/view_fixrr_model.dart';
 import '../../resources/utils/app_colors.dart';
 import '../../resources/widgets/text_widget.dart';

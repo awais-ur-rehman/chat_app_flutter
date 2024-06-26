@@ -5,7 +5,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'dart:convert';
-
 import '../../resources/utils/app_colors.dart';
 import '../../resources/utils/constants.dart';
 import '../../resources/widgets/BtnNullHeightWidth.dart';

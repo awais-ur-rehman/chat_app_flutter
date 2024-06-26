@@ -1,49 +1,64 @@
+import 'package:chat_app/resources/utils/app_colors.dart';
+import 'package:chat_app/resources/utils/constants.dart';
+import 'package:chat_app/screens/auth/fixrr_signup_screen.dart';
+import 'package:chat_app/screens/auth/login_screen.dart';
+import 'package:chat_app/screens/auth/user_signup_screen.dart';
+import 'package:chat_app/screens/choose_option_screen.dart';
+import 'package:chat_app/screens/user/home_screen.dart';
+import 'package:chat_app/screens/user/post_job.dart';
+import 'package:chat_app/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
-import 'signup_screen.dart';
-import 'login_screen.dart';
-import 'welcome_screen.dart';
-import 'chat_screen.dart';
-import 'list_screen.dart';
-import 'extension.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
+
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'User & Fixer App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: WelcomeScreen(),
-      routes: {
-        '/signup': (context) => SignupScreen(onSignup: () {
-          Navigator.pushReplacementNamed(context, '/login');
-        }),
-        '/login': (context) => LoginScreen(onLogin: (role, user) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ListScreen(
-                role: role,
-                user: user,
-              ),
-            ),
-          );
-        }),
-        '/chat': (context) => ChatScreen(
-          role: 'user', // Replace with actual role logic
-          userName: 'User', // Replace with actual user name logic
-          chatPartnerName: 'Partner', // Replace with actual chat partner name logic
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          cardTheme: CardTheme(
+            surfaceTintColor: Colors.white,
+          ),
+          // This is the theme of your application.
+          //
+          // TRY THIS: Try running your application with "flutter run". You'll see
+          // the application has a purple toolbar. Then, without quitting the app,
+          // try changing the seedColor in the colorScheme below to Colors.green
+          // and then invoke "hot reload" (save your changes or press the "hot
+          // reload" button in a Flutter-supported IDE, or press "r" if you used
+          // the command line to start the app).
+          //
+          // Notice that the counter didn't reset back to zero; the application
+          // state is not lost during the reload. To reset the state, use hot
+          // restart instead.
+          //
+          // This works for code too, not just values: Most code changes can be
+          // tested with just a hot reload.
+          colorScheme: ColorScheme.fromSeed(seedColor: AppColors.textBlue),
+          useMaterial3: true,
         ),
-        '/list': (context) => ListScreen(
-          role: 'user', // Replace with actual role logic
-          user: {'name': 'User'}, // Replace with actual user name logic
-        ),
-      },
+        initialRoute: Constants.welcomeScreen,
+        debugShowCheckedModeBanner: false,
+        routes: {
+          Constants.welcomeScreen: (context) => WelcomeScreen(),
+          Constants.loginScreen: (context) => const LoginScreen(),
+          Constants.homeScreen: (context) => HomeScreen(),
+          Constants.jobPost: (context) => const PostJob(jobName: "Job Name",),
+          Constants.registerUserScreen: (context) => UserSignUpScreen(),
+          Constants.registerFixrrScreen: (context) => FixrSignUpScreen(),
+          Constants.chooseOptions: (context) => ChooseOptionScreen(),
+          // Constants.matchFinderScreen: (context) => MatchList(),
+
+
+        }
     );
   }
 }
+

@@ -1,14 +1,12 @@
-import 'dart:ffi';
 import 'package:chat_app/screens/user/post_job.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-
 import '../../resources/utils/app_colors.dart';
 import '../../resources/utils/constants.dart';
 import '../../resources/widgets/text_widget.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -85,7 +83,7 @@ class HomeState extends State<HomeScreen> {
                             elevation: 25,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(18.0),
-                                side: BorderSide(
+                                side: const BorderSide(
                                     color: AppColors.primaryColor, width: 1.0)),
                             child: Column(
                               children: [
