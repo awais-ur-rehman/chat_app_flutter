@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-
 import '../../resources/utils/app_colors.dart';
 import '../../resources/utils/constants.dart';
-import '../../resources/widgets/BtnNullHeightWidth.dart';
 import '../../resources/widgets/text_widget.dart';
+import 'chat_partners.dart';
 
 class FixerHome extends StatefulWidget {
   const FixerHome({super.key});
@@ -20,7 +19,14 @@ class _FixerHomeState extends State<FixerHome> {
         leading: const Icon(Icons.dashboard_outlined),
         title: const Text('Fixxr Dashboard'),
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.message)),
+          IconButton(onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ChatPartners(userName: Constants.userName),
+              ),
+            );
+          }, icon: Icon(Icons.message)),
         ],
       ),
       body: SafeArea(

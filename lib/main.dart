@@ -4,6 +4,7 @@ import 'package:chat_app/screens/auth/fixrr_signup_screen.dart';
 import 'package:chat_app/screens/auth/login_screen.dart';
 import 'package:chat_app/screens/auth/user_signup_screen.dart';
 import 'package:chat_app/screens/choose_option_screen.dart';
+import 'package:chat_app/screens/fixrr/chat_partners.dart';
 import 'package:chat_app/screens/fixrr/fixerr_home.dart';
 import 'package:chat_app/screens/user/home_screen.dart';
 import 'package:chat_app/screens/user/post_job.dart';
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
           Constants.registerFixrrScreen: (context) => FixrSignUpScreen(),
           Constants.chooseOptions: (context) => ChooseOptionScreen(),
           Constants.fixerHomeScreen: (context) => const FixerHome(),
+          Constants.partnerScreen: (context) => const ChatPartners(userName: "username"),
           // Constants.matchFinderScreen: (context) => MatchList(),
         });
   }
