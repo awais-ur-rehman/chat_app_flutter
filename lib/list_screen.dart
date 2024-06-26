@@ -45,28 +45,43 @@ class _ListScreenState extends State<ListScreen> {
       appBar: AppBar(
         title: Text('${widget.role.toCapitalized()} List'),
       ),
-      body: ListView.builder(
-        itemCount: _list.length,
-        itemBuilder: (context, index) {
-          final item = _list[index];
-          return ListTile(
-            title: Text(item['name']),
-            subtitle: Text(item['email']),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ChatScreen(
-                    role: widget.role,
-                    userName: widget.user['name'],
-                    chatPartnerName: item['name'],
-                  ),
-                ),
-              );
-            },
-          );
+      body: FutureBuilder(
+        future: _fetchList(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting ) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          else if (snapshot.connectionState == ConnectionState.done) {
+            return ListView.builder(
+              itemCount: _list.length,
+              itemBuilder: (context, index) {
+                final item = _list[index];
+                return ListTile(
+                  title: Text(item['name']),
+                  subtitle: Text(item['email']),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ChatScreen(
+                          role: widget.role,
+                          userName: widget.user['name'],
+                          chatPartnerName: item['name'],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            );
+          }
+          else {
+            return const Text('a');
+          }
         },
-      ),
+      )
     );
   }
 }
